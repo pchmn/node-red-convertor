@@ -1,0 +1,58 @@
+<script type="text/x-red" data-template-name="convertor">
+    <p>A simple node that convert any data in a generic format.</p>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('convertor',{
+        category: 'function',
+        color: '#A6BBCF',
+        defaults: {
+            name: {value:""}
+        },
+        inputs:1,
+        outputs:1,
+        icon: "function.png",
+        label: function() {
+            return this.name || "convertor";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-help-name="convertor">
+    <p>A simple node that convert any data in a generic format.</p>
+    <p>From a post request, you must specify a <code>X-Data-Type</code> header that represents the type of data you're sending :</p>
+    <ul>
+        <li><code>OPEN_DATA_WIFI</code> : <a href="https://opendata.paris.fr/explore/dataset/utilisations_mensuelles_des_hotspots_paris_wi-fi/">Utilisations des hotspots Paris Wi-Fi</a></li>
+    </ul>
+    <p>In the body of the request you put your data in a JSON format.</p>
+    <p>The output of the node will be your data converted in a generic format like this :</p>
+    <pre>
+        <code>
+{
+    "header": {
+        "version": "1.2",
+        "commandclass": "ALLOW_ACCESS",
+        "id": "002",
+        "attributes": [{
+            "key": "type",
+            "value": "borne"
+        }]
+    },
+    "data": {
+        "action": "set",
+        "informationmap": [{
+            "key": "duration",
+            "value": "1"
+        }, {
+            "key": "allow",
+            "value": "true"
+        }]
+    }
+}
+        </code>
+    </pre>
+</script>

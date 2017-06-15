@@ -1,0 +1,13 @@
+{
+  "name": "node-red-convertor",
+  "version": "0.0.13",
+  "description": "Convertor to generic format",
+  "keywords": [
+    "node-red"
+  ],
+  "node-red": {
+    "nodes": {
+      "app": "app/app.js"
+    }
+  }
+}

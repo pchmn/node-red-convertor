@@ -1,6 +1,6 @@
 {
   "name": "node-red-convertor",
-  "version": "0.0.13",
+  "version": "0.0.15",
   "description": "Convertor to generic format",
   "keywords": [
     "node-red"
@@ -9,5 +9,8 @@
     "nodes": {
       "app": "app/app.js"
     }
+  },
+  "dependencies": {
+    "elasticsearch": "^13.1.1"
   }
 }

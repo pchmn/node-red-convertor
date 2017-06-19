@@ -7,10 +7,10 @@ module.exports = function(RED) {
 
       node.on('input', function(msg) {
         // get data type
-        const dataType = msg.req.headers["x-data-type"];
+        const dataType = msg.req ? msg.req.headers["x-data-type"] : msg.dataType;
         // get data
         var data = {};
-        data = msg.req.body;
+        data = msg.payload;
         // result
         var formatedData = {};
 

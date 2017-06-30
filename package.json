@@ -1,6 +1,6 @@
 {
   "name": "node-red-convertor",
-  "version": "0.0.15",
+  "version": "0.0.24",
   "description": "Convertor to generic format",
   "keywords": [
     "node-red"

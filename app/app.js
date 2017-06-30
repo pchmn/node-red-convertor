@@ -15,16 +15,20 @@ module.exports = function(RED) {
         var formatedData = {};
 
         switch(dataType) {
-          case "OPEN_DATA_WIFI": 
-            formatedData = convertOpenDataWifi(data);
+          case "OPEN_DATA_WITHOUT_LOCATION": 
+            formatedData = convertOpenDataWithoutLocation(data);
             break;
 
-          case "OPEN_DATA_BUS_POSITION_REAL_TIME": 
-            formatedData = convertOpenDataBusPositionRealTime(data);
+          case "OPEN_DATA_WITH_LOCATION": 
+            formatedData = convertOpenDataWithLocation(data);
             break;
+
+          case "SENSOR":
+            formatedData = convertSensorValue(data);
         }
 
         msg.payload = formatedData;
+        msg.dataType = formatedData.header.attributes[0].value;
         node.send(msg);
       });
   }
@@ -34,7 +38,7 @@ module.exports = function(RED) {
    * @param  {[type]} data [description]
    * @return {[type]}      [description]
    */
-  function convertOpenDataWifi(data) {
+  function convertOpenDataWithoutLocation(data) {
     // init formated data
     var formatedData = {};
     formatedData.header = {};
@@ -44,7 +48,7 @@ module.exports = function(RED) {
     formatedData.header.version = "1.2";
     formatedData.header.commandclass = "OPEN_DATA";
     formatedData.header.id = data.recordid;
-    formatedData.header.timestamp = new Date(data.record_timestamp).getTime() / 1000;
+    formatedData.header.timestamp = new Date(data.record_timestamp).getTime();
     formatedData.header.attributes = [];
     formatedData.header.attributes[0] = {};
     formatedData.header.attributes[0].key = "type";
@@ -68,7 +72,7 @@ module.exports = function(RED) {
     return formatedData;
   }
 
-  function convertOpenDataBusPositionRealTime(data) {
+  function convertOpenDataWithLocation(data) {
     // init formated data
     var formatedData = {};
     formatedData.header = {};
@@ -78,7 +82,7 @@ module.exports = function(RED) {
     formatedData.header.version = "1.2";
     formatedData.header.commandclass = "OPEN_DATA";
     formatedData.header.id = data.recordid;
-    formatedData.header.timestamp = new Date(data.record_timestamp).getTime() / 1000;
+    formatedData.header.timestamp = new Date(data.record_timestamp).getTime();
     formatedData.header.attributes = [];
     formatedData.header.attributes[0] = {};
     formatedData.header.attributes[0].key = "type";
@@ -111,6 +115,32 @@ module.exports = function(RED) {
         i++;
       }
     }
+
+    return formatedData;
+  }
+
+  function convertSensorValue(data) {
+    // init formated data
+    var formatedData = {};
+    formatedData.header = {};
+    formatedData.data = {};
+
+    // header
+    formatedData.header.version = "1.2";
+    formatedData.header.commandclass = data.commandclass;
+    formatedData.header.id = data.id;
+    formatedData.header.timestamp = data.date || new Date().getTime();
+    formatedData.header.attributes = [];
+    formatedData.header.attributes[0] = {};
+    formatedData.header.attributes[0].key = "type";
+    formatedData.header.attributes[0].value = data.type;
+
+    // data
+    formatedData.data.action = "set";
+    formatedData.data.informationmap = [];
+    formatedData.data.informationmap[0] = {};
+    formatedData.data.informationmap[0].key = "status";
+    formatedData.data.informationmap[0].value = String(data.value);
 
     return formatedData;
   }

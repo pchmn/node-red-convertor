@@ -260,7 +260,7 @@ module.exports = function(RED) {
 
     // data
     // cassandra
-    for(var item of data.data.[informationmap]) {
+    for(var item of data.data.informationmap) {
       formatedData.cassandraSensorValues.data[item.key] = item.value;
     }
     // elastic
